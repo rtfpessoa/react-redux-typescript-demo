@@ -8,9 +8,10 @@
     "test": "node scripts/test.js --env=jsdom",
     "test-coverage": "node scripts/test.js --env=jsdom --coverage",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage",
-    "lint": "tslint -c tslint.json 'src/**/*.tsx' && eslint .",
+    "lint": "tslint -c tslint.json 'src/**/*.tsx' && eslint . && stylelint 'src/**/*.css'",
     "tslint": "tslint -c tslint.json 'src/**/*.tsx'",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "stylelint": "stylelint 'src/**/*.css'"
   },
   "dependencies": {
     "@types/react-redux": "^5.0.14",
@@ -66,7 +67,13 @@
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
-    "react-addons-test-utils": "^15.6.2"
+    "postcss": ">=5.0.0",
+    "react-addons-test-utils": "^15.6.2",
+    "stylelint": "^8.4.0",
+    "stylelint-config-recommended-scss": "^3.0.0",
+    "stylelint-config-standard": "^18.0.0",
+    "stylelint-order": "^0.8.0",
+    "stylelint-scss": "^2.0.0"
   },
   "jest": {
     "mapCoverage": true,
