@@ -8,7 +8,9 @@
     "test": "node scripts/test.js --env=jsdom",
     "test-coverage": "node scripts/test.js --env=jsdom --coverage",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage",
-    "lint": "tslint --project ."
+    "lint": "tslint -c tslint.json 'src/**/*.tsx' && eslint .",
+    "tslint": "tslint -c tslint.json 'src/**/*.tsx'",
+    "eslint": "eslint ."
   },
   "dependencies": {
     "@types/react-redux": "^5.0.14",
@@ -54,9 +56,16 @@
     "@types/node": "^9.3.0",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
+    "babel-eslint": "^7.2.3",
     "codacy-coverage": "^2.0.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.15.0",
+    "eslint-config-react-app": "^2.0.1",
+    "eslint-plugin-flowtype": "^2.34.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
     "react-addons-test-utils": "^15.6.2"
   },
   "jest": {

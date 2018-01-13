@@ -12,7 +12,7 @@ import { StoreState } from './types/index';
 
 const store = createStore<StoreState>(enthusiasm, {
   enthusiasmLevel: 1,
-  languageName: 'Codacy',
+  languageName: 'Codacy'
 });
 
 ReactDOM.render(
