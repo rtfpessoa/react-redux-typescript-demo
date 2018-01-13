@@ -1,5 +1,3 @@
-
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -41,10 +39,12 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
 // However, our output is structured with css, js and media folders.
 // To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = shouldUseRelativeAssetPaths
-  ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
-  : {};
+const extractTextPluginOptions = shouldUseRelativeAssetPaths ? // Making sure that the publicPath goes back to to build folder.
+  {
+    publicPath: Array(cssFilename.split('/')
+        .length)
+      .join('../')
+  } : {};
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -70,8 +70,8 @@ module.exports = {
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
       path
-        .relative(paths.appSrc, info.absoluteResourcePath)
-        .replace(/\\/g, '/'),
+      .relative(paths.appSrc, info.absoluteResourcePath)
+      .replace(/\\/g, '/'),
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -80,7 +80,8 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/253
     modules: ['node_modules', paths.appNodeModules].concat(
       // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+      process.env.NODE_PATH.split(path.delimiter)
+      .filter(Boolean)
     ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
@@ -100,7 +101,7 @@ module.exports = {
       '.jsx',
     ],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -176,10 +177,9 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
+            test: /\.(css|sass|scss)$/,
             loader: ExtractTextPlugin.extract(
-              Object.assign(
-                {
+              Object.assign({
                   fallback: require.resolve('style-loader'),
                   use: [
                     {
@@ -190,6 +190,7 @@ module.exports = {
                         sourceMap: shouldUseSourceMap,
                       },
                     },
+                    require.resolve('sass-loader'),
                     {
                       loader: require.resolve('postcss-loader'),
                       options: {

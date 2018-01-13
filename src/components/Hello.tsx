@@ -1,7 +1,7 @@
 // src/components/Hello.tsx
 
 import * as React from 'react';
-import './Hello.css';
+import './Hello.scss';
 
 export interface Props {
   name: string;
