@@ -3,21 +3,29 @@ import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
-import Hello from './containers/Hello';
+import App from './containers/App';
 import { Provider } from 'react-redux';
-
-import { createStore } from 'redux';
-import { enthusiasm } from './reducers/index';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, Middleware } from 'redux';
+import rootReducer from './reducers/index';
 import { StoreState } from './types/index';
+import { createLogger } from 'redux-logger';
 
-const store = createStore<StoreState>(enthusiasm, {
-  enthusiasmLevel: 1,
-  languageName: 'Codacy'
-});
+const middleware: Middleware[] = [thunk];
+
+const logger = createLogger({});
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(logger);
+}
+
+const store = createStore<StoreState>(
+  rootReducer,
+  applyMiddleware(...middleware)
+);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Hello />
+    <App />
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
