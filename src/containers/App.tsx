@@ -8,17 +8,17 @@ export function mapStateToProps({ selectedSubreddit, postsBySubreddit }: StoreSt
   const {
     isFetching,
     lastUpdated,
-    items: posts
-  } = postsBySubreddit[selectedSubreddit] || {
+  } = postsBySubreddit || {
     isFetching: true,
-    items: [],
     lastUpdated: Date.now()
   };
 
+  const posts = postsBySubreddit.items.get(selectedSubreddit) || [];
+
   return {
     selectedSubreddit,
-    posts,
     isFetching,
+    posts,
     lastUpdated
   };
 }

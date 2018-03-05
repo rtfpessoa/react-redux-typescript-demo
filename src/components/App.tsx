@@ -56,7 +56,7 @@ export class App extends React.Component<Props, object> {
         <Picker
           value={selectedSubreddit}
           onChange={this.handleChange}
-          options={['reactjs', 'frontend']}
+          options={['reactjs', 'frontend', 'scala', 'pics', 'gifs']}
         />
         <p>
           {lastUpdated &&

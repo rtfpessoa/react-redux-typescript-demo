@@ -2,8 +2,10 @@
 
 import { combineReducers, Reducer } from 'redux';
 import { Action } from '../actions';
-import { StoreState, SubReddit } from '../types/index';
+import { StoreState, SubReddits, RedditPost } from '../types/index';
 import { RECEIVE_POSTS, REQUEST_POSTS, INVALIDATE_SUBREDDIT, SELECT_SUBREDDIT } from '../constants/index';
+
+import { routerReducer } from 'react-router-redux';
 
 function selectedSubreddit(state: string = 'scala', action: Action): string {
   switch (action.type) {
@@ -14,7 +16,10 @@ function selectedSubreddit(state: string = 'scala', action: Action): string {
   }
 }
 
-function posts(state: SubReddit = { isFetching: false, didInvalidate: false, items: [] }, action: Action): SubReddit {
+function postsBySubreddit(
+  state: SubReddits = { isFetching: false, didInvalidate: false, items: new Map<string, RedditPost[]>() },
+  action: Action
+): SubReddits {
   switch (action.type) {
     case INVALIDATE_SUBREDDIT:
       return {
@@ -32,7 +37,7 @@ function posts(state: SubReddit = { isFetching: false, didInvalidate: false, ite
         ...state,
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        items: new Map(state.items).set(action.subreddit, action.posts),
         lastUpdated: action.receivedAt
       };
     default:
@@ -40,23 +45,10 @@ function posts(state: SubReddit = { isFetching: false, didInvalidate: false, ite
   }
 }
 
-function postsBySubreddit(state: object = {}, action: Action): object {
-  switch (action.type) {
-    case INVALIDATE_SUBREDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
-      return {
-        ...state,
-        [action.subreddit]: posts(state[action.subreddit], action)
-      };
-    default:
-      return state;
-  }
-}
-
 const rootReducer: Reducer<StoreState> = combineReducers({
+  selectedSubreddit,
   postsBySubreddit,
-  selectedSubreddit
+  routing: routerReducer
 });
 
 export default rootReducer;

@@ -1,19 +1,26 @@
 // src/types/index.tsx
 
-export interface SubReddit {
+export interface SubReddits {
   isFetching: boolean;
   didInvalidate: boolean;
-  items: RedditPost[];
   lastUpdated?: number;
+  items: Map<string, RedditPost[]>;
 }
 
 export interface StoreState {
   selectedSubreddit: string;
-  postsBySubreddit: [string, SubReddit];
+  postsBySubreddit: SubReddits;
 }
 
 export interface RedditPost {
+  id: string;
   title: string;
+  subreddit: string;
+  num_comments: number;
+  created_utc: number;
+  url: string;
+  selftext: string;
+  selftext_html: string;
 }
 
 export interface RedditPostElement {

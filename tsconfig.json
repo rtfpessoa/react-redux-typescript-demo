@@ -7,6 +7,12 @@
       "es6",
       "dom"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "./typings/*"
+      ]
+    },
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
