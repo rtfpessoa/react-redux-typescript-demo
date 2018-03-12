@@ -1,15 +1,15 @@
-// src/types/index.tsx
+// src/types/index.ts
+
+export interface StoreState {
+  selectedSubreddit: string;
+  postsBySubreddit: SubReddits;
+}
 
 export interface SubReddits {
   isFetching: boolean;
   didInvalidate: boolean;
   lastUpdated?: number;
   items: Map<string, RedditPost[]>;
-}
-
-export interface StoreState {
-  selectedSubreddit: string;
-  postsBySubreddit: SubReddits;
 }
 
 export interface RedditPost {
@@ -21,16 +21,4 @@ export interface RedditPost {
   url: string;
   selftext: string;
   selftext_html: string;
-}
-
-export interface RedditPostElement {
-  data: RedditPost;
-}
-
-interface ResponseData {
-  children: RedditPostElement[];
-}
-
-export interface Response {
-  data: ResponseData;
 }

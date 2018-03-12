@@ -1,13 +1,16 @@
 // src/reducers/index.tsx
 
 import { combineReducers, Reducer } from 'redux';
-import { Action } from '../actions';
+import { RedditAction } from '../actions';
 import { StoreState, SubReddits, RedditPost } from '../types/index';
 import { RECEIVE_POSTS, REQUEST_POSTS, INVALIDATE_SUBREDDIT, SELECT_SUBREDDIT } from '../constants/index';
 
 import { routerReducer } from 'react-router-redux';
 
-function selectedSubreddit(state: string = 'scala', action: Action): string {
+function selectedSubreddit(
+  state: string = 'scala',
+  action: RedditAction
+): string {
   switch (action.type) {
     case SELECT_SUBREDDIT:
       return action.subreddit;
@@ -18,7 +21,7 @@ function selectedSubreddit(state: string = 'scala', action: Action): string {
 
 function postsBySubreddit(
   state: SubReddits = { isFetching: false, didInvalidate: false, items: new Map<string, RedditPost[]>() },
-  action: Action
+  action: RedditAction
 ): SubReddits {
   switch (action.type) {
     case INVALIDATE_SUBREDDIT:

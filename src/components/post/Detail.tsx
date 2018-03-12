@@ -2,26 +2,31 @@
 
 import * as React from 'react';
 import { Dispatch } from 'redux';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { RedditPost, StoreState } from '../../types/index';
-import { fetchPostsIfNeeded } from '../../actions';
+import * as actions from '../../actions';
 
-export interface Params {
+interface Params {
   subReddit: string;
   postId: string;
 }
 
-export interface Props {
+interface Props {
   selectedSubreddit: string;
   post: RedditPost | undefined;
   dispatch: Dispatch<StoreState>;
 }
 
-export class Detail extends React.Component<Props & RouteComponentProps<Params>> {
+interface Actions {
+  fetchPostsIfNeeded: (subreddit: string) => Promise<actions.ReceivePosts> | Promise<null>;
+}
+
+class Detail extends React.PureComponent<Props & Actions & RouteComponentProps<Params>> {
   componentDidMount() {
-    const { dispatch, selectedSubreddit } = this.props;
-    dispatch(fetchPostsIfNeeded(selectedSubreddit));
+    const { selectedSubreddit } = this.props;
+    this.props.fetchPostsIfNeeded(selectedSubreddit);
   }
 
   unescape(str: string) {
@@ -38,14 +43,12 @@ export class Detail extends React.Component<Props & RouteComponentProps<Params>>
     const { post } = this.props;
 
     if (!post) {
-      return (
-        <h2>Loading...</h2>
-      );
+      return <h2>Loading...</h2>;
     }
 
     return (
       <div>
-        <div><Link to={`/`} >&lt;back</Link></div>
+        <h4>Reddit &gt; <Link to={`/`}>{post.subreddit}</Link> &gt; {post.title}</h4>
         <div id={post.id}>
           <h1>{post.title}</h1>
           <ul>
@@ -54,16 +57,30 @@ export class Detail extends React.Component<Props & RouteComponentProps<Params>>
             <li>Created: {new Date(post.created_utc * 1000).toLocaleDateString()}</li>
           </ul>
           {post.selftext_html &&
-            (
-              <div>
-                <div dangerouslySetInnerHTML={{ __html: this.unescape(post.selftext_html) }} />
-              </div>
-            )
-          }
+            <div>
+              <div dangerouslySetInnerHTML={{ __html: this.unescape(post.selftext_html) }} />
+            </div>}
         </div>
       </div>
     );
   }
 }
 
-export default Detail;
+function mapStateToProps(state: StoreState, ownProps: Props & RouteComponentProps<Params>) {
+  const { postsBySubreddit } = state;
+  const channelPosts: RedditPost[] = postsBySubreddit.items.get(ownProps.match.params.subReddit) || [];
+  const post = channelPosts.find((p: RedditPost) => p.id === ownProps.match.params.postId);
+
+  return {
+    selectedSubreddit: ownProps.match.params.subReddit,
+    post
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch<StoreState>) {
+  return {
+    fetchPostsIfNeeded: (subreddit: string) => dispatch(actions.fetchPostsIfNeeded(subreddit))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Detail));
