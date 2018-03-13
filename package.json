@@ -14,6 +14,7 @@
     "stylelint": "stylelint 'src/**/*.css'"
   },
   "dependencies": {
+    "@types/react-bootstrap": "^0.32.6",
     "@types/react-redux": "^5.0.14",
     "@types/react-router-dom": "^4.2.4",
     "@types/react-router-redux": "^5.0.12",
@@ -37,6 +38,7 @@
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",

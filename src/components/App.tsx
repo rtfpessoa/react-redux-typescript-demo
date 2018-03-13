@@ -10,6 +10,8 @@ import { Posts } from '../components/Posts';
 
 import * as actions from '../actions/index';
 
+import { Button } from 'react-bootstrap';
+
 interface Props {
   selectedSubreddit: string;
   posts: RedditPost[];
@@ -46,9 +48,7 @@ class App extends React.PureComponent<Props & Actions> {
     this.props.selectSubreddit(nextSubreddit);
   }
 
-  handleRefreshClick(e: React.MouseEvent<HTMLElement>) {
-    e.preventDefault();
-
+  handleRefreshClick() {
     const { selectedSubreddit } = this.props;
     this.props.invalidateSubreddit(selectedSubreddit);
     this.props.fetchPostsIfNeeded(selectedSubreddit);
@@ -72,7 +72,8 @@ class App extends React.PureComponent<Props & Actions> {
             </span>}
 
           {!isFetching &&
-            <button onClick={this.handleRefreshClick}>Refresh</button>}
+            <Button bsStyle="primary" onClick={this.handleRefreshClick}>Refresh</Button>
+          }
         </p>
 
         {isEmpty
